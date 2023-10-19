@@ -1,31 +1,56 @@
-import { StyleSheet } from 'react-native';
+import { Button, FlatList, Heading, HStack, Text, VStack } from 'native-base'
+import { useCallback, useEffect, useState } from 'react'
+import { Task, TaskProps, TaskFormattedProps } from '../../components/Task'
+import { DateTime } from 'luxon'
+import { Header } from '../../components/Header'
 
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
+export default function Home() {
+  const [tasks, setTasks] = useState<TaskFormattedProps[]>([])
 
-export default function TabOneScreen() {
+  function convertDate(date: Date): string {
+    const dateTime = DateTime.fromISO(date.toISOString());
+    const timeAgo = dateTime.toRelative({ base: DateTime.local() })
+
+    return timeAgo!
+  }
+
+  useEffect(() => {
+    loadTasks()
+    async function loadTasks() {
+      const response: TaskProps[] = [
+        {
+          id: 1,
+          description: 'Test first task',
+          done: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ]
+      const formattedTasks = response.map(item => {
+        return {
+          ...item,
+          formattedDate: {
+            created: convertDate(item.createdAt),
+            updated: convertDate(item.updatedAt)
+          }}
+      })
+
+      setTasks(formattedTasks)
+    }
+  }, [])
+
+  const deleteTask = useCallback((id: number) => {
+      setTasks(oldData => [...oldData.filter(item => item.id !== id)])
+  }, [])
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
+    <VStack bg='#011323' flex={1}>
+      <Header />
+      <VStack mt={5} mx={10}>
+        <Button w={20} mb={5}>Add task</Button>
+        {tasks.map(item => <Task key={item.id} data={item} deleteTask={deleteTask} />)}
+      </VStack>
+    </VStack>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
