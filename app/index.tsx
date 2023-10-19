@@ -6,17 +6,22 @@ import { Header } from '../components/Header'
 import { AddButton } from '../components/AddButton'
 import { AntDesign } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import { DeleteButton } from '../components/DeleteButton'
 
 export default function Home() {
   const router = useRouter()
   const [tasks, setTasks] = useState<TaskFormattedProps[]>([])
+
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   function convertDate(date: Date): string {
     const dateTime = DateTime.fromISO(date.toISOString());
     const timeAgo = dateTime.toRelative({ base: DateTime.local() })
 
     return timeAgo!
+  }
+
+  function toggleModal() {
+    setIsModalVisible(!isModalVisible)
   }
 
   useEffect(() => {
@@ -30,34 +35,6 @@ export default function Home() {
           createdAt: new Date(),
           updatedAt: new Date()
         },
-        {
-          id: 2,
-          description: 'Test first task',
-          done: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          id: 3,
-          description: 'Test first task',
-          done: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          id: 4,
-          description: 'Test first task',
-          done: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          id: 5,
-          description: 'Test first task',
-          done: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
       ]
       const formattedTasks = response.map(item => {
         return {

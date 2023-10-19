@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
+import { TasksProvider } from '../context/TasksContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,7 +50,9 @@ function RootLayoutNav() {
   return (
     <NativeBaseProvider>
       <StatusBar barStyle={'light-content'} />
-      <Stack screenOptions={{ headerShown: false }} />
+      <TasksProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </TasksProvider>
     </NativeBaseProvider>
   );
 }
