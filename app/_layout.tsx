@@ -57,9 +57,9 @@ function RootLayoutNav() {
     <NativeBaseProvider>
       <StatusBar barStyle={'light-content'} />
       <ApolloProvider client={client} >
-      <TasksProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </TasksProvider>
+        <TasksProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+        </TasksProvider>
       </ApolloProvider>
     </NativeBaseProvider>
   );

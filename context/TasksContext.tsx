@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { DateTime } from 'luxon'
 import { TaskFormattedProps, TaskProps } from "../components/Task";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { GET_TASKS } from "../graphql/queries";
+import { CREATE_TASK } from "../graphql/mutations";
 
 interface TasksContextProps {
   tasks: TaskFormattedProps[]
-  addTask: (task: TaskProps) => void
+  addTask: (description: string) => Promise<void>
   updateTask: (task: TaskFormattedProps) => void
   deleteTask: (id: number) => void
 }
@@ -15,6 +16,7 @@ export const TasksContext = createContext({} as TasksContextProps)
 
 export const TasksProvider = ({ children }: any) => {
   const { data, loading } = useQuery(GET_TASKS)
+  const [createTask, { data:createTaskData }] = useMutation(CREATE_TASK)
   const [tasks, setTasks] = useState<TaskFormattedProps[]>([])
 
   useEffect(() => {
@@ -29,10 +31,19 @@ export const TasksProvider = ({ children }: any) => {
     }
   }, [data, loading])
 
-  function addTask(task: TaskProps) {
+  async function addTask(description: string) {
+
+    const { data } = await createTask({
+      variables: {
+          description
+      },
+    })
+
+    const createdTask = data.create
+
     const taskFormatted: TaskFormattedProps = {
-      ...task,
-      formattedDate: formattedDate(task.createdAt, task.updatedAt)}
+      ...createdTask,
+      formattedDate: formattedDate(createdTask.createdAt, createdTask.updatedAt)}
     setTasks(oldData => [...oldData, taskFormatted])
   }
 
@@ -58,10 +69,10 @@ export const TasksProvider = ({ children }: any) => {
   }
 
   function convertDate(date: Date): string {
-    const dateTime = DateTime.fromISO(date.toString());
-    const timeAgo = dateTime.toRelative({ base: DateTime.local() })
+    //const dateTime = DateTime.fromISO(date.toString());
+    //const timeAgo = dateTime.toRelative({ base: DateTime.local() })
 
-    return timeAgo!
+    return 'timeAgo'!
   }
 
   return (

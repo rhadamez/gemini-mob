@@ -32,19 +32,13 @@ export default function CreateTask() {
     }
   }, [])
 
-  function handleAddTask(data: any) {
-    if(params) {
-      updateTask({...params, description: data.description})
-    } else {
-      addTask({
-        id: tasks.length+1,
-        description: data.description,
-        done: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
-    }
-    router.back()
+  async function handleAddTask(data: any) {
+    // if(params) {
+    //   updateTask({...params, description: data.description})
+    // } else {
+      await addTask(data.description)
+    //}
+    //router.back()
   }
 
   return (
