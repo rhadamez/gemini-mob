@@ -4,12 +4,21 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { useTasks } from '../context/TasksContext';
 import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export default function CreateTask() {
   const { addTask } = useTasks()
 
-  const { control, handleSubmit, reset, clearErrors, setFocus, formState: { errors } } = useForm({
-		mode: 'all'
+  const schema = yup
+  .object({
+    description: yup.string().required('Must be required').min(3, 'Must have at least 3 chars')
+  })
+  .required()
+
+  const { control, handleSubmit, formState: { errors } } = useForm({
+		resolver: yupResolver(schema),
+    mode: 'all'
 	})
 
   function handleAddTask(data: any) {
@@ -24,7 +33,12 @@ export default function CreateTask() {
           control={control}
           name='description'
           render={({ field: { onChange, value }}) => (
-            <Input placeholder='description' onChangeText={onChange} value={value} />
+            <Input
+              placeholder='description'
+              onChangeText={onChange}
+              value={value}
+              error={errors.description?.message}
+              />
           )}
         />
         <Button text='Add task' onPress={handleSubmit(handleAddTask)} />

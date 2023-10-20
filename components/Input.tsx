@@ -1,8 +1,13 @@
-import { Input as NativeBaseInput, IInputProps } from 'native-base'
+import { Input as NativeBaseInput, IInputProps, Text, VStack } from 'native-base'
 
-export function Input({...rest}: IInputProps) {
+interface Props extends IInputProps {
+	error?: string
+}
+
+export function Input({error, ...rest}: Props) {
 	return(
-		<NativeBaseInput
+		<VStack mb={4}>
+				<NativeBaseInput
 			bg='#fff'
 			h={10}
 			px={4}
@@ -10,7 +15,6 @@ export function Input({...rest}: IInputProps) {
 			fontSize='md'
 			color='#000'
 			fontFamily='body'
-			mb={4}
 			placeholderTextColor='gray.500'
 			_focus={{
 				bg:'#fff',
@@ -18,5 +22,7 @@ export function Input({...rest}: IInputProps) {
 			}}
 			{...rest}
 		/>
+		{error && <Text color='red.400'>{error}</Text>}
+		</VStack>
 	)
 }
