@@ -33,11 +33,11 @@ export default function CreateTask() {
   }, [])
 
   async function handleAddTask(data: any) {
-    // if(params) {
-    //   updateTask({...params, description: data.description})
-    // } else {
+    if(params) {
+      await updateTask({...params, description: data.description})
+    } else {
       await addTask(data.description)
-    //}
+    }
     //router.back()
   }
 

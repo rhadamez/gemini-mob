@@ -3,6 +3,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { DeleteButton } from './DeleteButton'
 import { useRouter } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
+import { useTasks } from '../context/TasksContext'
 
 export interface TaskProps {
   id: number
@@ -21,14 +22,14 @@ export interface TaskFormattedProps extends TaskProps {
 
 interface Props {
   data: TaskFormattedProps
-  deleteTask: (id: number) => void
 }
 
-export function Task({ data, deleteTask }: Props) {
+export function Task({ data }: Props) {
   const router = useRouter()
+  const { deleteTask } = useTasks()
 
-  function handleDeleteTask() {
-    deleteTask(data.id)
+  async function handleDeleteTask() {
+    await deleteTask(data.id)
   }
 
   function updateItem() {

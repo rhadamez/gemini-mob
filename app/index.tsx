@@ -1,28 +1,21 @@
 import { ScrollView, VStack } from 'native-base'
-import { useCallback, useState } from 'react'
-import { Task, TaskFormattedProps  } from '../components/Task'
-import { DateTime } from 'luxon'
+import { useState } from 'react'
+import { Task } from '../components/Task'
 import { Header } from '../components/Header'
 import { AddButton } from '../components/AddButton'
 import { AntDesign } from '@expo/vector-icons'
-import { useRouter, useLocalSearchParams } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { useTasks } from '../context/TasksContext'
-import { useQuery } from '@apollo/client'
-import { GET_TASKS } from '../graphql/queries'
 
 export default function Home() {
   const router = useRouter()
-  const { tasks, deleteTask } = useTasks()
+  const { tasks } = useTasks()
 
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   function toggleModal() {
     setIsModalVisible(!isModalVisible)
   }
-
-  const handleDeleteTask = useCallback((id: number) => {
-    deleteTask(id)
-  }, [])
 
   function createTask() {
     router.push('/create-task')
@@ -34,7 +27,7 @@ export default function Home() {
       <ScrollView mt={5} showsVerticalScrollIndicator={false}>
         <VStack space={5} mx={4} pt={10} pb={20}>
           {tasks.map(item => (
-            <Task key={item.id} data={item} deleteTask={handleDeleteTask} />
+            <Task key={item.id} data={item} />
           ))}
         </VStack>
       </ScrollView>
