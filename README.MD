@@ -25,6 +25,8 @@
 
 ## How to execute
 
+(start backend first)
+
 1 - Install dependencies with npm:
 
 ```
@@ -37,4 +39,14 @@ npm i
 npm run start
 ```
 
-3 - Select the options according to each platform.
+3 - Change the url according to what expo shows in the console in the file
+"app/\_layout.tsx":
+
+```
+const client = new ApolloClient({
+  uri: 'http://192.168.1.70:3333/graphql', <--this line!
+  cache: new InMemoryCache(),
+})
+```
+
+4 - Select the options according to each platform.
