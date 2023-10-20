@@ -6,9 +6,11 @@ import { useTasks } from '../context/TasksContext';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useRouter } from 'expo-router';
 
 export default function CreateTask() {
-  const { addTask } = useTasks()
+  const { addTask, tasks } = useTasks()
+  const router = useRouter()
 
   const schema = yup
   .object({
@@ -22,7 +24,14 @@ export default function CreateTask() {
 	})
 
   function handleAddTask(data: any) {
-    console.log(data)
+    addTask({
+        id: tasks.length+1,
+        description: data.description,
+        done: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    })
+    router.back()
   }
 
   return (
