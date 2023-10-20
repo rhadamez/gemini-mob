@@ -12,8 +12,21 @@ interface TasksContextProps {
 export const TasksContext = createContext({} as TasksContextProps)
 
 export const TasksProvider = ({ children }: any) => {
-  const [tasks, setTasks] = useState<TaskFormattedProps[]>([])
+  const [tasks, setTasks] = useState<TaskFormattedProps[]>([
+    {
+      id: 1,
+      description: 'Test first task',
+      done: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      formattedDate: {
+        created: '0 times ago',
+        updated: '2 times ago'
+      }
+    },
+  ])
 
+  
   function addTask(task: TaskProps) {
     const taskFormatted: TaskFormattedProps = {
       ...task,

@@ -6,10 +6,11 @@ import { Header } from '../components/Header'
 import { AddButton } from '../components/AddButton'
 import { AntDesign } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { useTasks } from '../context/TasksContext'
 
 export default function Home() {
   const router = useRouter()
-  const [tasks, setTasks] = useState<TaskFormattedProps[]>([])
+  const { tasks, deleteTask } = useTasks()
 
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -24,33 +25,8 @@ export default function Home() {
     setIsModalVisible(!isModalVisible)
   }
 
-  useEffect(() => {
-    loadTasks()
-    async function loadTasks() {
-      const response: TaskProps[] = [
-        {
-          id: 1,
-          description: 'Test first task',
-          done: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-      ]
-      const formattedTasks = response.map(item => {
-        return {
-          ...item,
-          formattedDate: {
-            created: convertDate(item.createdAt),
-            updated: convertDate(item.updatedAt)
-          }}
-      })
-
-      setTasks(formattedTasks)
-    }
-  }, [])
-
-  const deleteTask = useCallback((id: number) => {
-      setTasks(oldData => [...oldData.filter(item => item.id !== id)])
+  const handleDeleteTask = useCallback((id: number) => {
+    deleteTask(id)
   }, [])
 
   function createTask() {
@@ -62,7 +38,7 @@ export default function Home() {
       <Header />
       <ScrollView mt={5} showsVerticalScrollIndicator={false}>
         <VStack space={5} mx={4} pt={10} pb={20}>
-          {tasks.map(item => <Task key={item.id} data={item} deleteTask={deleteTask} />)}
+          {tasks.map(item => <Task key={item.id} data={item} deleteTask={handleDeleteTask} />)}
         </VStack>
       </ScrollView>
       <AddButton
