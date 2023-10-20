@@ -5,7 +5,7 @@ import { TaskFormattedProps, TaskProps } from "../components/Task";
 interface TasksContextProps {
   tasks: TaskFormattedProps[]
   addTask: (task: TaskProps) => void
-  updateTask: (task: TaskProps) => void
+  updateTask: (task: TaskFormattedProps) => void
   deleteTask: (id: number) => void
 }
 
@@ -26,7 +26,6 @@ export const TasksProvider = ({ children }: any) => {
     },
   ])
 
-  
   function addTask(task: TaskProps) {
     const taskFormatted: TaskFormattedProps = {
       ...task,
@@ -34,7 +33,7 @@ export const TasksProvider = ({ children }: any) => {
     setTasks(oldData => [...oldData, taskFormatted])
   }
 
-  function updateTask(task: TaskProps) {
+  function updateTask(task: TaskFormattedProps) {
     const taskFormatted: TaskFormattedProps = {
       ...task,
       formattedDate: formattedDate(task.createdAt, task.updatedAt)}

@@ -7,12 +7,18 @@ import { AddButton } from '../components/AddButton'
 import { AntDesign } from '@expo/vector-icons'
 import { useRouter, useLocalSearchParams } from 'expo-router'
 import { useTasks } from '../context/TasksContext'
+import { useQuery } from '@apollo/client'
+import { GET_TASKS } from '../graphql/queries'
 
 export default function Home() {
   const router = useRouter()
   const { tasks, deleteTask } = useTasks()
 
   const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const { data } = useQuery(GET_TASKS)
+
+  console.log(data)
 
   function convertDate(date: Date): string {
     const dateTime = DateTime.fromISO(date.toISOString());

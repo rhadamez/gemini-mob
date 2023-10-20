@@ -13,6 +13,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@apollo/client": "^3.8.6",
     "@expo/vector-icons": "^13.0.0",
     "@hookform/resolvers": "^3.3.2",
     "@react-navigation/native": "^6.0.2",
@@ -24,6 +25,7 @@
     "expo-status-bar": "~1.6.0",
     "expo-system-ui": "~2.4.0",
     "expo-web-browser": "~12.3.2",
+    "graphql": "^15.8.0",
     "luxon": "^3.4.3",
     "native-base": "^3.4.28",
     "polished": "^4.2.2",

@@ -11,7 +11,7 @@ import { TaskFormattedProps } from '../components/Task';
 import { useEffect } from 'react';
 
 export default function CreateTask() {
-  const { addTask, tasks } = useTasks()
+  const { addTask, updateTask, tasks } = useTasks()
   const router = useRouter()
   const params = useLocalSearchParams<any>() as TaskFormattedProps
 
@@ -33,13 +33,17 @@ export default function CreateTask() {
   }, [])
 
   function handleAddTask(data: any) {
-    addTask({
+    if(params) {
+      updateTask({...params, description: data.description})
+    } else {
+      addTask({
         id: tasks.length+1,
         description: data.description,
         done: false,
         createdAt: new Date(),
         updatedAt: new Date(),
-    })
+      })
+    }
     router.back()
   }
 
