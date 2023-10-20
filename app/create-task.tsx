@@ -6,11 +6,14 @@ import { useTasks } from '../context/TasksContext';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { TaskFormattedProps } from '../components/Task';
+import { useEffect } from 'react';
 
 export default function CreateTask() {
   const { addTask, tasks } = useTasks()
   const router = useRouter()
+  const params = useLocalSearchParams<any>() as TaskFormattedProps
 
   const schema = yup
   .object({
@@ -18,10 +21,16 @@ export default function CreateTask() {
   })
   .required()
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm({
 		resolver: yupResolver(schema),
     mode: 'all'
 	})
+
+  useEffect(() => {
+    if(params) {
+      setValue('description', params.description)
+    }
+  }, [])
 
   function handleAddTask(data: any) {
     addTask({

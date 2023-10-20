@@ -1,11 +1,11 @@
-import { Button, FlatList, Heading, HStack, ScrollView, Text, VStack } from 'native-base'
-import { useCallback, useEffect, useState } from 'react'
-import { Task, TaskProps, TaskFormattedProps } from '../components/Task'
+import { ScrollView, VStack } from 'native-base'
+import { useCallback, useState } from 'react'
+import { Task, TaskFormattedProps  } from '../components/Task'
 import { DateTime } from 'luxon'
 import { Header } from '../components/Header'
 import { AddButton } from '../components/AddButton'
 import { AntDesign } from '@expo/vector-icons'
-import { useRouter } from 'expo-router'
+import { useRouter, useLocalSearchParams } from 'expo-router'
 import { useTasks } from '../context/TasksContext'
 
 export default function Home() {
@@ -38,7 +38,9 @@ export default function Home() {
       <Header />
       <ScrollView mt={5} showsVerticalScrollIndicator={false}>
         <VStack space={5} mx={4} pt={10} pb={20}>
-          {tasks.map(item => <Task key={item.id} data={item} deleteTask={handleDeleteTask} />)}
+          {tasks.map(item => (
+            <Task key={item.id} data={item} deleteTask={handleDeleteTask} />
+          ))}
         </VStack>
       </ScrollView>
       <AddButton
