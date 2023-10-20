@@ -57,7 +57,7 @@ export default function CreateTask() {
               />
           )}
         />
-        <Button text='Add task' onPress={handleSubmit(handleAddTask)} />
+        <Button text={!!params.id ? 'Update task' : 'Register task'} onPress={handleSubmit(handleAddTask)} />
       </VStack>
     </VStack>
   );
