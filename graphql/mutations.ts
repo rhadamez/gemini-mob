@@ -15,8 +15,9 @@ export const CREATE_TASK = gql`
 `;
 
 export const UPDATE_TASK = gql`
-  mutation($description: String, $done: boolean) {
+  mutation($id: Int!, $description: String!, $done: Boolean!) {
     update(data: {
+      id: $id
       description: $description
       done: $done
     }) {
@@ -30,7 +31,7 @@ export const UPDATE_TASK = gql`
 `;
 
 export const DELETE_TASK = gql`
-  mutation($id: number!) {
+  mutation($id: Int!) {
     delete(data: {
       id: $id
     })

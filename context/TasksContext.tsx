@@ -47,12 +47,17 @@ export const TasksProvider = ({ children }: any) => {
   }
 
   async function updateTask(task: TaskFormattedProps) {
-    const { data } = await updateTaske({
-      variables: {
-          description: task.description,
-          done: task.done
-      },
-    })
+    try {
+      await updateTaske({
+        variables: {
+            id: Number(task.id),
+            description: task.description,
+            done: Boolean(task.done)
+        },
+      })
+    } catch(err) {
+      console.log(JSON.stringify(err))
+    }
 
     const taskFormatted: TaskFormattedProps = {
       ...task,
@@ -64,11 +69,17 @@ export const TasksProvider = ({ children }: any) => {
   }
 
   async function deleteTask(id: number) {
-    await deleteTaskById({
-      variables: {
-          id
-      },
-    })
+    const taskId = Number(id)
+    try {
+      await deleteTaskById({
+        variables: {
+          id: taskId
+        },
+      })
+    } catch(err) {
+      console.log(JSON.stringify(err))
+    }
+
 
     setTasks(oldData => [...oldData.filter(item => item.id !== id)])
   }

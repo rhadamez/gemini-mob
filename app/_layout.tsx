@@ -6,7 +6,7 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
 import { TasksProvider } from '../context/TasksContext';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,7 +47,7 @@ export default function RootLayout() {
 
 const client = new ApolloClient({
   uri: 'http://192.168.1.70:3333/graphql',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 })
 
 function RootLayoutNav() {

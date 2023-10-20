@@ -4,6 +4,7 @@ import { DeleteButton } from './DeleteButton'
 import { useRouter } from 'expo-router'
 import { TouchableOpacity } from 'react-native'
 import { useTasks } from '../context/TasksContext'
+import { memo } from 'react'
 
 export interface TaskProps {
   id: number
@@ -24,7 +25,7 @@ interface Props {
   data: TaskFormattedProps
 }
 
-export function Task({ data }: Props) {
+export function TaskItem({ data }: Props) {
   const router = useRouter()
   const { deleteTask } = useTasks()
 
@@ -67,3 +68,4 @@ export function Task({ data }: Props) {
   );
 }
 
+export const Task = memo(TaskItem)

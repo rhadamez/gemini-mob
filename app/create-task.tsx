@@ -33,7 +33,7 @@ export default function CreateTask() {
   }, [])
 
   async function handleAddTask(data: any) {
-    if(params) {
+    if(params.id) {
       await updateTask({...params, description: data.description})
     } else {
       await addTask(data.description)
