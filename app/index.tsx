@@ -1,4 +1,4 @@
-import { ScrollView, VStack } from 'native-base'
+import { ScrollView, Text, VStack } from 'native-base'
 import { useState } from 'react'
 import { Task } from '../components/Task'
 import { Header } from '../components/Header'
@@ -26,9 +26,15 @@ export default function Home() {
       <Header />
       <ScrollView mt={5} showsVerticalScrollIndicator={false}>
         <VStack space={5} mx={4} pt={10} pb={20}>
-          {tasks.map(item => (
-            <Task key={item.id} data={item} />
-          ))}
+          {tasks.length > 0 ? (
+            <>
+              {tasks.map(item => (
+                <Task key={item.id} data={item} />
+              ))}
+            </>
+            ) : (
+            <Text color='#fff' fontSize={'md'} bold>No tasks yet</Text>
+          )}
         </VStack>
       </ScrollView>
       <AddButton
