@@ -5,6 +5,9 @@ export const GET_TASKS = gql`
     list {
       id
       description
+      done
+      createdAt
+      updatedAt
     }
   }
 `

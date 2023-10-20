@@ -1,5 +1,4 @@
 import { Box, Text, HStack, VStack, Icon } from 'native-base'
-import { DateTime } from 'luxon'
 import { AntDesign } from '@expo/vector-icons'
 import { DeleteButton } from './DeleteButton'
 import { useRouter } from 'expo-router'
@@ -27,9 +26,6 @@ interface Props {
 
 export function Task({ data, deleteTask }: Props) {
   const router = useRouter()
-
-  const date = DateTime.fromISO(data.createdAt.toISOString());
-  const timeAgo = date.toRelative({ base: DateTime.local() })
 
   function handleDeleteTask() {
     deleteTask(data.id)

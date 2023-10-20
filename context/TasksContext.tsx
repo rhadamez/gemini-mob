@@ -1,6 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { DateTime } from 'luxon'
 import { TaskFormattedProps, TaskProps } from "../components/Task";
+import { useQuery } from "@apollo/client";
+import { GET_TASKS } from "../graphql/queries";
 
 interface TasksContextProps {
   tasks: TaskFormattedProps[]
@@ -12,19 +14,20 @@ interface TasksContextProps {
 export const TasksContext = createContext({} as TasksContextProps)
 
 export const TasksProvider = ({ children }: any) => {
-  const [tasks, setTasks] = useState<TaskFormattedProps[]>([
-    {
-      id: 1,
-      description: 'Test first task',
-      done: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      formattedDate: {
-        created: '0 times ago',
-        updated: '2 times ago'
-      }
-    },
-  ])
+  const { data, loading } = useQuery(GET_TASKS)
+  const [tasks, setTasks] = useState<TaskFormattedProps[]>([])
+
+  useEffect(() => {
+    if(data) {
+      const formattedTasks = data.list.map((item:TaskProps) => {
+        return {
+          ...item,
+          formattedDate: formattedDate(item.createdAt, item.updatedAt)
+        }
+      })
+      setTasks(formattedTasks)
+    }
+  }, [data, loading])
 
   function addTask(task: TaskProps) {
     const taskFormatted: TaskFormattedProps = {
@@ -55,7 +58,7 @@ export const TasksProvider = ({ children }: any) => {
   }
 
   function convertDate(date: Date): string {
-    const dateTime = DateTime.fromISO(date.toISOString());
+    const dateTime = DateTime.fromISO(date.toString());
     const timeAgo = dateTime.toRelative({ base: DateTime.local() })
 
     return timeAgo!

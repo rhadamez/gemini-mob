@@ -16,17 +16,6 @@ export default function Home() {
 
   const [isModalVisible, setIsModalVisible] = useState(false)
 
-  const { data } = useQuery(GET_TASKS)
-
-  console.log(data)
-
-  function convertDate(date: Date): string {
-    const dateTime = DateTime.fromISO(date.toISOString());
-    const timeAgo = dateTime.toRelative({ base: DateTime.local() })
-
-    return timeAgo!
-  }
-
   function toggleModal() {
     setIsModalVisible(!isModalVisible)
   }
